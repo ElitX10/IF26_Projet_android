@@ -26,10 +26,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
+<!--todo : mettre "android:screenOrientation= "portrait"" pour toutes les activités-->
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
+            android:label="@string/title_activity_maps"
+            android:screenOrientation= "portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
