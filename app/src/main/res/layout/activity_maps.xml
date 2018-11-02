@@ -30,7 +30,35 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
+        android:background="@drawable/button_style"
+
         android:onClick="onClick"
-        android:text="@string/map_show_map" />
+
+        android:shadowColor="#0000FF"
+        android:shadowDx="-6"
+        android:shadowDy="4"
+        android:shadowRadius="3"
+        android:text="@string/map_show_map"
+        android:textAllCaps="false"
+        android:textColor="#BFFFF7"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/lock_location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+
+        android:background="@drawable/button_style"
+        android:onClick="onClickLockCamera"
+        android:shadowColor="#0000FF"
+        android:shadowDx="-6"
+        android:shadowDy="4"
+        android:shadowRadius="3"
+        android:text="¤"
+        android:textAllCaps="false"
+        android:textColor="#BFFFF7"
+        android:textSize="20sp"
+        android:visibility="invisible" />
 
 </RelativeLayout>

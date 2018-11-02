@@ -2,11 +2,10 @@ package fr.utt.if26.if26_projet_android;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.net.Uri;
-import android.provider.Settings;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -24,11 +23,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements
-        OnMapReadyCallback, View.OnClickListener {
+        OnMapReadyCallback, View.OnClickListener, LocationListener {
 
     private GoogleMap mMap;
     private ImageView image_pika;
     private Button show_map_button;
+    private Button center_map_button;
+
+    private boolean isCameraLock = false;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +42,10 @@ public class MapsActivity extends FragmentActivity implements
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // init views :
         image_pika = findViewById(R.id.map_Image);
         show_map_button = findViewById(R.id.show_map_button);
+        center_map_button = findViewById(R.id.lock_location_button);
 
         //check permisions :
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -56,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements
         }else {
             image_pika.setVisibility(View.INVISIBLE);
             show_map_button.setVisibility(View.INVISIBLE);
+            center_map_button.setVisibility(View.VISIBLE);
         }
     }
 
@@ -85,12 +91,16 @@ public class MapsActivity extends FragmentActivity implements
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-        }
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            // set location listener
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,500,5, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,500,5, this);
+
+            // zoom to the current location :
+            zoomOnCurrentLocation();
+        }
     }
 
     @Override
@@ -115,5 +125,58 @@ public class MapsActivity extends FragmentActivity implements
                 askMapPermission();
             }
         }).show();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if(isCameraLock){
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+//        todo : que faire qand le gps est éteint par l'utilisateur
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    public void onClickLockCamera(View v){
+        isCameraLock = !isCameraLock;
+        // changement de couleur du bouton :
+        if(isCameraLock){
+            center_map_button.setBackground(getResources().getDrawable(R.drawable.button_style_red));
+        }else{
+            center_map_button.setBackground(getResources().getDrawable(R.drawable.button_style));
+        }
+
+        // focus sur la position de l'utilisateur
+        if(isCameraLock){
+            zoomOnCurrentLocation();
+            mMap.getUiSettings().setScrollGesturesEnabled(false);
+            mMap.getUiSettings().setZoomGesturesEnabled(false);
+        }else{
+            mMap.getUiSettings().setScrollGesturesEnabled(true);
+            mMap.getUiSettings().setZoomGesturesEnabled(true);
+        }
+
+    }
+
+    private void zoomOnCurrentLocation(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED){
+            Location current_location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+            if(current_location != null){
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(current_location.getLatitude(), current_location.getLongitude()), 15));
+            }
+        }
     }
 }
