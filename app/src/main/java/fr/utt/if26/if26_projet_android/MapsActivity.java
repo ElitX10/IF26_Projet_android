@@ -103,6 +103,10 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
+    /**
+     * @param v bouton afficher la carte
+     * Affiche la carte ou le boutton pour donner les autorisations de l'application pour la géolocaliation
+     */
     @Override
     public void onClick(View v) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -127,6 +131,10 @@ public class MapsActivity extends FragmentActivity implements
         }).show();
     }
 
+    /**
+     * @param location current localisation
+     * Si la caméra est vérouillé, permet de suivre la position de l'utilisateur sur la carte
+     */
     @Override
     public void onLocationChanged(Location location) {
         if(isCameraLock){
@@ -141,7 +149,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onProviderEnabled(String provider) {
-//        todo : que faire qand le gps est éteint par l'utilisateur
+
     }
 
     @Override
@@ -149,6 +157,10 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
+    /**
+     * @param v boutton pour lock
+     * Permet de (dé)verouiller la camera sur l'utilisateur
+     */
     public void onClickLockCamera(View v){
         isCameraLock = !isCameraLock;
         // changement de couleur du bouton :
@@ -170,6 +182,9 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
+    /**
+     * Zoom sur la position actuel de l'utilisateur
+     */
     private void zoomOnCurrentLocation(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED){
