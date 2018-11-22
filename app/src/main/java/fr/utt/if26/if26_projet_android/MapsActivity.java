@@ -33,6 +33,8 @@ public class MapsActivity extends FragmentActivity implements
     private boolean isCameraLock = false;
     private LocationManager locationManager;
 
+    private Location myLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +139,7 @@ public class MapsActivity extends FragmentActivity implements
      */
     @Override
     public void onLocationChanged(Location location) {
+        this.myLocation = location;
         if(isCameraLock){
             mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
         }
@@ -188,7 +191,10 @@ public class MapsActivity extends FragmentActivity implements
     private void zoomOnCurrentLocation(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED){
-            Location current_location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+            Location current_location = myLocation;
+            if (current_location == null) {
+               current_location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+            }
             if(current_location != null){
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(current_location.getLatitude(), current_location.getLongitude()), 15));
             }
