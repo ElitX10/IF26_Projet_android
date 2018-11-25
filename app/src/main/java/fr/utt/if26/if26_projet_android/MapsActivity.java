@@ -65,6 +65,10 @@ public class MapsActivity extends FragmentActivity implements
             show_map_button.setVisibility(View.INVISIBLE);
             center_map_button.setVisibility(View.VISIBLE);
         }
+
+        // test db todo : remove si non utilisé
+        PokemonDAO pokemonDAO = new PokemonDAO(this);
+
     }
 
 
