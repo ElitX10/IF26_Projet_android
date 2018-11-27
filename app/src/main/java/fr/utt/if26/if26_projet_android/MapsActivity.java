@@ -68,6 +68,9 @@ public class MapsActivity extends FragmentActivity implements
 
         // test db todo : remove si non utilisé
         PokemonDAO pokemonDAO = new PokemonDAO(this);
+        if (pokemonDAO.getAllPokemons().size() == 0){
+            pokemonDAO.loadFirstGen();
+        }
 
     }
 
