@@ -10,8 +10,6 @@ import java.util.List;
 
 public class PokemonDAO extends PokeAppDBDAO {
 
-    private static final String WHERE_ID_EQUALS = DataBaseHelper.ID_POKEMON + " =?";
-
     public PokemonDAO(Context context) {
         super(context);
     }
@@ -69,6 +67,7 @@ public class PokemonDAO extends PokeAppDBDAO {
         while (cursor.moveToNext()){
             pokemons.add(new Pokemon(cursor.getInt(0), cursor.getString(1)));
         }
+        cursor.close();
         return pokemons;
     }
 }

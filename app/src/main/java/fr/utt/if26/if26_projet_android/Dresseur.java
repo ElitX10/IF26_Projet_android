@@ -19,6 +19,12 @@ public class Dresseur implements Parcelable {
         this.password = password;
     }
 
+    public Dresseur(String pseudo, String password) {
+        super();
+        this.pseudo = pseudo;
+        this.password = password;
+    }
+
     protected Dresseur(Parcel in) {
         super();
         id = in.readInt();
