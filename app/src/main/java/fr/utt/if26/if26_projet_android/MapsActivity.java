@@ -1,7 +1,10 @@
 package fr.utt.if26.if26_projet_android;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -20,7 +23,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback, View.OnClickListener, LocationListener {
@@ -109,6 +111,33 @@ public class MapsActivity extends FragmentActivity implements
 
             // zoom to the current location :
             zoomOnCurrentLocation();
+
+            //
+            mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(final LatLng latLng) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                    builder.setTitle("Pokestop"); //R.string.app_name todo @string
+                    builder.setMessage("Voulez vous ajouter un Pokestop ?"); // todo @string
+//                    builder.setIcon(R.drawable.ic_launcher);
+                    builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(MapsActivity.this, Edit_Pokestop_Activity.class);
+                            intent.putExtra("Lat", latLng.latitude);
+                            intent.putExtra("Lng", latLng.longitude);
+                            startActivity(intent);
+                        }
+                    });
+                    builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            });
         }
     }
 
