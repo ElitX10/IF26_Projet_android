@@ -43,7 +43,7 @@ public class ConnexionActivity extends AppCompatActivity implements View.OnClick
         identifiantEditText = findViewById(R.id.identifiantConnexionEditText);
         motDePasseEditText = findViewById(R.id.motDePasseConnexionEditText);
         infosTextView.setVisibility(View.GONE);
-        if (pseudo == null || pseudo.length() > 0){
+        if (pseudo != null && pseudo.length() > 0){
             infosTextView.setTextColor(Color.GREEN);
             infosTextView.setText("Inscription réussie ! Vous pouvez vous connecter :"); // todo @string
             infosTextView.setVisibility(View.VISIBLE);

@@ -257,7 +257,7 @@ public class MapsActivity extends FragmentActivity implements
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
         builder.setTitle("Déconnexion"); //R.string.app_name todo @string
-        builder.setMessage("Voulez vous déconnecter ?"); // todo @string
+        builder.setMessage("Voulez vous vous déconnecter ?"); // todo @string
         builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
