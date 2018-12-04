@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -37,6 +38,8 @@ public class MapsActivity extends FragmentActivity implements
 
     private Location myLocation;
 
+    private Dresseur currentDresseur;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,20 @@ public class MapsActivity extends FragmentActivity implements
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        // init data :
+        PokemonDAO pokemonDAO = new PokemonDAO(this);
+        if (pokemonDAO.getAllPokemons().size() == 0){
+            pokemonDAO.loadFirstGen();
+        }
+        DresseurDAO dresseurDAO = new DresseurDAO(this);
+        SharedPreferences myPrefs= getSharedPreferences("dresseur", MODE_PRIVATE);
+        int dresseur_id = myPrefs.getInt("dresseur_id", 0);
+        currentDresseur = dresseurDAO.getDresseurById(dresseur_id);
+        if(currentDresseur == null){
+            deconnexion();
+        }
+        System.out.println("mon nom : " + currentDresseur.getPseudo());
 
         // init views :
         image_pika = findViewById(R.id.map_Image);
@@ -67,13 +84,6 @@ public class MapsActivity extends FragmentActivity implements
             show_map_button.setVisibility(View.INVISIBLE);
             center_map_button.setVisibility(View.VISIBLE);
         }
-
-        // test db todo : remove si non utilisé
-        PokemonDAO pokemonDAO = new PokemonDAO(this);
-        if (pokemonDAO.getAllPokemons().size() == 0){
-            pokemonDAO.loadFirstGen();
-        }
-
     }
 
 
@@ -119,7 +129,6 @@ public class MapsActivity extends FragmentActivity implements
                     AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
                     builder.setTitle("Pokestop"); //R.string.app_name todo @string
                     builder.setMessage("Voulez vous ajouter un Pokestop ?"); // todo @string
-//                    builder.setIcon(R.drawable.ic_launcher);
                     builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
@@ -235,5 +244,32 @@ public class MapsActivity extends FragmentActivity implements
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(current_location.getLatitude(), current_location.getLongitude()), 15));
             }
         }
+    }
+
+    private void deconnexion(){
+        SharedPreferences myPrefs= getSharedPreferences("dresseur", MODE_PRIVATE);
+        myPrefs.edit().remove("dresseur_id").apply();
+        Intent intent = new Intent(MapsActivity.this, ConnexionActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+        builder.setTitle("Déconnexion"); //R.string.app_name todo @string
+        builder.setMessage("Voulez vous vous déconnecter ?"); // todo @string
+        builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                deconnexion();
+            }
+        });
+        builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
