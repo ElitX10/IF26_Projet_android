@@ -6,9 +6,10 @@ import android.os.Parcelable;
 public class Pokestop implements Parcelable {
     private int id;
     private boolean is_gym;
-    private long latitude;
-    private long longitude;
+    private double latitude;
+    private double longitude;
     private Dresseur dresseur;
+    private String nom;
 
     public Pokestop(){
         super();
@@ -17,8 +18,9 @@ public class Pokestop implements Parcelable {
     protected Pokestop(Parcel in) {
         id = in.readInt();
         is_gym = in.readByte() != 0;
-        latitude = in.readLong();
-        longitude = in.readLong();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        nom = in.readString();
         dresseur = in.readParcelable(Dresseur.class.getClassLoader());
     }
 
@@ -26,8 +28,9 @@ public class Pokestop implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(getId());
         dest.writeByte((byte) (get_Is_gym() ? 1 : 0));
-        dest.writeLong(getLatitude());
-        dest.writeLong(getLongitude());
+        dest.writeDouble(getLatitude());
+        dest.writeDouble(getLongitude());
+        dest.writeString(getNom());
         dest.writeParcelable(getDresseur(), flags);
     }
 
@@ -56,6 +59,7 @@ public class Pokestop implements Parcelable {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", dresseur=" + dresseur +
+                ", nom='" + nom + '\'' +
                 '}';
     }
 
@@ -75,19 +79,19 @@ public class Pokestop implements Parcelable {
         this.is_gym = is_gym;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -97,5 +101,13 @@ public class Pokestop implements Parcelable {
 
     public void setDresseur(Dresseur dresseur) {
         this.dresseur = dresseur;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 }

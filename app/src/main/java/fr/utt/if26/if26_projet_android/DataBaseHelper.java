@@ -30,6 +30,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     // nom colonnes table pokestop :
     public static final String ID_POKESTOP = "id";
+    public static final String NOM_POKESTOP = "nom";
     public static final String IS_GYM_POKESTOP = "is_gym";
     public static final String LATITUDE_POKESTOP = "latitude";
     public static final String LONGITUDE_POKESTOP = "longitude";
@@ -55,6 +56,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             + "PRIMARY KEY("+ ID_POKEMON +") )";
     public static final String CREATE_POKESTOP_TABLE = "CREATE TABLE "+ POKESTOP_TABLE +" ( "
             + ID_POKESTOP +" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
+            + NOM_POKESTOP +" TEXT NOT NULL, "
             + IS_GYM_POKESTOP +" INTEGER NOT NULL DEFAULT 0, "
             + LATITUDE_POKESTOP +" NUMERIC NOT NULL, "
             + LONGITUDE_POKESTOP +" NUMERIC NOT NULL, "

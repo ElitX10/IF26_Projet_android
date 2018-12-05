@@ -61,7 +61,6 @@ public class MapsActivity extends FragmentActivity implements
         if(currentDresseur == null){
             deconnexion();
         }
-        System.out.println("mon nom : " + currentDresseur.getPseudo());
 
         // init views :
         image_pika = findViewById(R.id.map_Image);
