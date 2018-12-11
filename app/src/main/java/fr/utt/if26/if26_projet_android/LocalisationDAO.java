@@ -32,6 +32,8 @@ public class LocalisationDAO extends PokeAppDBDAO {
         while (cursor.moveToNext()){
             Localisation localisation = new Localisation();
 
+            localisation.setId(cursor.getInt(0));
+
             PokestopDAO pokestopDAO = new PokestopDAO(context);
             Pokestop pokestop = pokestopDAO.getPokestop(cursor.getInt(3), context);
             localisation.setPokestop(pokestop);
@@ -49,5 +51,9 @@ public class LocalisationDAO extends PokeAppDBDAO {
             localisations.add(localisation);
         }
         return localisations;
+    }
+
+    public void delete(int id){
+        database.delete(DataBaseHelper.LOCALISATION_TABLE, DataBaseHelper.ID_LOCALISATION + " =?", new String[] { id + "" });
     }
 }

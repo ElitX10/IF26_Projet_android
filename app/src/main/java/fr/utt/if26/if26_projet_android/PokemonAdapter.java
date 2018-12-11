@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -32,10 +33,15 @@ public class PokemonAdapter extends ArrayAdapter {
         View v = inflater.inflate(resource, parent, false);
 
         Localisation localisation = localisations.get(position);
+
         TextView nomPokemon = v.findViewById(R.id.pokemonListItemTextView);
         nomPokemon.setText(localisation.getPokemon().getNom());
+
         TextView heurePokemon = v.findViewById(R.id.heureListItemTextView);
         heurePokemon.setText(localisation.getTime());
+
+        Button supprimer = v.findViewById(R.id.supprimerListItemButton);
+        supprimer.setTag(localisation.getId());
         return v;
     }
 }

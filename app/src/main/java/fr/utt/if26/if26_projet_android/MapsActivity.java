@@ -93,7 +93,7 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-
+    // todo image tuto de l'app
     /**
      * affiche le popup pour accepter la localisation
      */

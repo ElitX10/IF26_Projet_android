@@ -1,5 +1,8 @@
 package fr.utt.if26.if26_projet_android;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -115,5 +118,30 @@ public class PokestopInformationsActivity extends AppCompatActivity implements V
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * @param v bouton de suppression d'un item de la liste
+     * Supprime un pokemon sur le pokestop en fonction du bouton de la liste
+     */
+    public void onClickSupprimer(final View v) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(PokestopInformationsActivity.this);
+        builder.setTitle("Suppression d'un pokemon"); //R.string.app_name todo @string
+        builder.setMessage("Voulez vous supprimer ce Pokemon ?"); // todo @string
+        builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                int delete_id = Integer.parseInt(v.getTag().toString());
+                localisationDAO.delete(delete_id);
+                PokestopInformationsActivity.this.recreate();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
