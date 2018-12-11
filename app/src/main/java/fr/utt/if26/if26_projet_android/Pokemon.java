@@ -69,4 +69,8 @@ public class Pokemon implements Parcelable {
                 ", nom='" + nom + '\'' +
                 '}';
     }
+
+    public String spinnerVal(){
+        return "#" + id + " " + nom;
+    }
 }

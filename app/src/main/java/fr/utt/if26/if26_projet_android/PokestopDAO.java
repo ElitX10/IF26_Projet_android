@@ -2,6 +2,9 @@ package fr.utt.if26.if26_projet_android;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+
+import java.util.ArrayList;
 
 public class PokestopDAO extends PokeAppDBDAO {
     public PokestopDAO(Context context) {
@@ -17,5 +20,59 @@ public class PokestopDAO extends PokeAppDBDAO {
         values.put(DataBaseHelper.ID_DRESSEUR_POKESTOP, pokestop.getDresseur().getId());
 
         database.insert(DataBaseHelper.POKESTOP_TABLE, null, values);
+    }
+
+    public ArrayList<Pokestop> getAllPokestop(Context context){
+        ArrayList<Pokestop> pokestops = new ArrayList<Pokestop>();
+
+        String query = "SELECT * FROM " + DataBaseHelper.POKESTOP_TABLE;
+        Cursor cursor = database.rawQuery(query, null);
+        while (cursor.moveToNext()){
+            Pokestop pokestop = new Pokestop();
+            pokestop.setId(cursor.getInt(0));
+            pokestop.setNom(cursor.getString(1));
+            Boolean is_gym;
+            if (cursor.getString(2).equals("1")) {
+                is_gym = true;
+            } else {
+                is_gym = false;
+            }
+            pokestop.set_Is_gym(is_gym);
+            Double latitude = Double.parseDouble(cursor.getString(3));
+            pokestop.setLatitude(latitude);
+            Double longitude = Double.parseDouble(cursor.getString(4));
+            pokestop.setLongitude(longitude);
+
+            DresseurDAO dresseurDAO= new DresseurDAO(context);
+            Dresseur dresseur = dresseurDAO.getDresseurById(cursor.getInt(5));
+            pokestop.setDresseur(dresseur);
+
+            pokestops.add(pokestop);
+        }
+        return pokestops;
+    }
+
+    public Pokestop getPokestop(int id, Context context) {
+        String query = "SELECT * FROM " + DataBaseHelper.POKESTOP_TABLE
+                + " WHERE " + DataBaseHelper.POKESTOP_TABLE + "." + DataBaseHelper.ID_POKESTOP
+                + " = '" + id + "'";
+        Cursor cursor = database.rawQuery(query, null);
+        if (cursor.getCount() > 0){
+            cursor.moveToFirst();
+            DresseurDAO dresseurDAO = new DresseurDAO(context);
+            Boolean is_gym;
+            if (cursor.getString(2).equals("1")) {
+                is_gym = true;
+            } else {
+                is_gym = false;
+            }
+            Pokestop pokestop = new Pokestop(cursor.getInt(0),
+                    cursor.getString(1), is_gym,
+                    cursor.getDouble(3), cursor.getDouble(4),
+                    dresseurDAO.getDresseurById(cursor.getInt(5)));
+            return pokestop;
+        }
+        cursor.close();
+        return null;
     }
 }

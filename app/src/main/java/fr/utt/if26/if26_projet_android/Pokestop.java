@@ -24,6 +24,16 @@ public class Pokestop implements Parcelable {
         dresseur = in.readParcelable(Dresseur.class.getClassLoader());
     }
 
+    public Pokestop(int id, String nom, boolean is_gym, double latitude, double longitude, Dresseur dresseur) {
+        super();
+        this.id = id;
+        this.nom = nom;
+        this.is_gym = is_gym;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.dresseur = dresseur;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(getId());

@@ -9,8 +9,8 @@ public class Localisation implements Parcelable {
     private int id;
     private String time;
     private Pokestop pokestop;
-    private  Pokemon pokemon;
-    private  Dresseur dresseur;
+    private Pokemon pokemon;
+    private Dresseur dresseur;
 
     public  Localisation(){
         super();
