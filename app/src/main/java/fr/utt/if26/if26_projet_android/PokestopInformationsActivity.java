@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -83,6 +84,13 @@ public class PokestopInformationsActivity extends AppCompatActivity implements V
         actionBar.setTitle(currentPokestop.getNom());
     }
 
+    // create an action bar button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_button_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     /**
      * @param v bouton de validation d'ajout d'un pokemon
      * Ajout d'un pokemon sur le pokestop en fonction du spinner
@@ -114,6 +122,11 @@ public class PokestopInformationsActivity extends AppCompatActivity implements V
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.icon_modif_button:
+                Intent intent = new Intent(PokestopInformationsActivity.this, Edit_Pokestop_Activity.class);
+                intent.putExtra("pokestop_id", currentPokestop.getId());
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

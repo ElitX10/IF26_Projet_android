@@ -69,7 +69,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             + ID_POKESTOP_LOCALISATION +" INTEGER NOT NULL, "
             + TIME_LOCALISATION +" TEXT NOT NULL, "
             + "FOREIGN KEY("+ ID_POKEMON_LOCALISATION +") REFERENCES "+ POKEMON_TABLE +"("+ ID_POKEMON +"), "
-            + "FOREIGN KEY("+ ID_POKESTOP_LOCALISATION +") REFERENCES "+ POKESTOP_TABLE +"("+ ID_POKESTOP +"), "
+            + "FOREIGN KEY("+ ID_POKESTOP_LOCALISATION +") REFERENCES "+ POKESTOP_TABLE +"("+ ID_POKESTOP +") ON DELETE CASCADE, "
             + "FOREIGN KEY("+ ID_DRESSEUR_LOCALISATION +") REFERENCES "+ DRESSEUR_TABLE +"("+ ID_DRESSEUR +") )";
 
     private static DataBaseHelper instance;

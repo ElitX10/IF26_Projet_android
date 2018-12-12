@@ -52,6 +52,20 @@ public class PokestopDAO extends PokeAppDBDAO {
         return pokestops;
     }
 
+    public void update(Pokestop pokestop){
+        ContentValues values = new ContentValues();
+        values.put(DataBaseHelper.NOM_POKESTOP, pokestop.getNom());
+        values.put(DataBaseHelper.IS_GYM_POKESTOP, pokestop.get_Is_gym());
+        values.put(DataBaseHelper.LATITUDE_POKESTOP, pokestop.getLatitude());
+        values.put(DataBaseHelper.LONGITUDE_POKESTOP, pokestop.getLongitude());
+        values.put(DataBaseHelper.ID_DRESSEUR_POKESTOP, pokestop.getDresseur().getId());
+
+        System.out.println(pokestop.getId());
+        database.update(DataBaseHelper.POKESTOP_TABLE, values,
+                DataBaseHelper.ID_POKESTOP + " =?",
+                new String[] { String.valueOf(pokestop.getId()) });
+    }
+
     public Pokestop getPokestop(int id, Context context) {
         String query = "SELECT * FROM " + DataBaseHelper.POKESTOP_TABLE
                 + " WHERE " + DataBaseHelper.POKESTOP_TABLE + "." + DataBaseHelper.ID_POKESTOP
@@ -74,5 +88,11 @@ public class PokestopDAO extends PokeAppDBDAO {
         }
         cursor.close();
         return null;
+    }
+
+    public void deletePokestop(int id){
+        database.delete(DataBaseHelper.POKESTOP_TABLE,
+                DataBaseHelper.ID_POKESTOP + " =?",
+                new String[] { String.valueOf(id) });
     }
 }
