@@ -62,12 +62,27 @@ public class PokemonDAO extends PokeAppDBDAO {
 
     public ArrayList<Pokemon> getAllPokemons(){
         ArrayList<Pokemon> pokemons = new ArrayList<Pokemon>();
-        String query = "SELECT * FROM " + DataBaseHelper.POKEMON_TABLE;
+        String query = "SELECT * FROM " + DataBaseHelper.POKEMON_TABLE; // todo : order
         Cursor cursor = database.rawQuery(query, null);
         while (cursor.moveToNext()){
             pokemons.add(new Pokemon(cursor.getInt(0), cursor.getString(1)));
         }
         cursor.close();
         return pokemons;
+    }
+
+    public Pokemon getPokemon(int id) {
+        String query = "SELECT * FROM " + DataBaseHelper.POKEMON_TABLE
+                + " WHERE " + DataBaseHelper.POKEMON_TABLE + "." + DataBaseHelper.ID_POKEMON
+                + " = '" + id + "'";
+        Cursor cursor = database.rawQuery(query, null);
+        if (cursor.getCount() > 0){
+            cursor.moveToFirst();
+            Pokemon pokemon = new Pokemon(cursor.getInt(0),
+                    cursor.getString(1));
+            return pokemon;
+        }
+        cursor.close();
+        return null;
     }
 }

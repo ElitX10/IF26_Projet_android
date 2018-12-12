@@ -23,10 +23,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MapsActivity extends FragmentActivity implements
-        OnMapReadyCallback, View.OnClickListener, LocationListener {
+        OnMapReadyCallback, View.OnClickListener, LocationListener,
+        GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private ImageView image_pika;
@@ -61,7 +69,6 @@ public class MapsActivity extends FragmentActivity implements
         if(currentDresseur == null){
             deconnexion();
         }
-        System.out.println("mon nom : " + currentDresseur.getPseudo());
 
         // init views :
         image_pika = findViewById(R.id.map_Image);
@@ -86,7 +93,7 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-
+    // todo image tuto de l'app
     /**
      * affiche le popup pour accepter la localisation
      */
@@ -114,15 +121,10 @@ public class MapsActivity extends FragmentActivity implements
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-            // set location listener
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,500,5, this);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,500,5, this);
+            // création des pokestops
+            createPokestops();
 
-            // zoom to the current location :
-            zoomOnCurrentLocation();
-
-            //
+            // ajout de pokestop avec un long click sur la carte :
             mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                 @Override
                 public void onMapLongClick(final LatLng latLng) {
@@ -147,6 +149,17 @@ public class MapsActivity extends FragmentActivity implements
                     alert.show();
                 }
             });
+
+            // set location listener
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,500,5, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,500,5, this);
+
+            // zoom to the current location :
+            zoomOnCurrentLocation();
+
+            // Set a listener for info window events.
+            mMap.setOnInfoWindowClickListener(this);
         }
     }
 
@@ -210,6 +223,7 @@ public class MapsActivity extends FragmentActivity implements
      * Permet de (dé)verouiller la camera sur l'utilisateur
      */
     public void onClickLockCamera(View v){
+        // todo changer le comportement :
         isCameraLock = !isCameraLock;
         // changement de couleur du bouton :
         if(isCameraLock){
@@ -271,5 +285,36 @@ public class MapsActivity extends FragmentActivity implements
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void createPokestops(){
+        PokestopDAO pokestopDAO = new PokestopDAO(this);
+        ArrayList<Pokestop> pokestops = pokestopDAO.getAllPokestop(this);
+
+        // create markers on map :
+        for (Pokestop pokestop : pokestops){
+            BitmapDescriptor bitmapDescriptor;
+            // couleur du marker :
+            if (pokestop.get_Is_gym()){
+                bitmapDescriptor = BitmapDescriptorFactory.defaultMarker((int) BitmapDescriptorFactory.HUE_GREEN);
+            } else {
+                bitmapDescriptor = BitmapDescriptorFactory.defaultMarker((int) BitmapDescriptorFactory.HUE_CYAN);
+            }
+
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(pokestop.getLatitude(), pokestop.getLongitude()))
+                    .title(pokestop.getNom())
+                    .icon(bitmapDescriptor));
+            int pokestop_id = pokestop.getId();
+            marker.setTag(pokestop_id);
+        }
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        int pokestopId = (int) marker.getTag();
+        Intent intent = new Intent(MapsActivity.this, PokestopInformationsActivity.class);
+        intent.putExtra("pokestop_id", pokestopId);
+        startActivity(intent);
     }
 }
