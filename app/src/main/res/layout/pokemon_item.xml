@@ -23,5 +23,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:onClick="onClickSupprimer"
-        android:text="Supprimer" />
+        android:text="Supprimer"
+
+        android:background="@drawable/button_style"
+        android:shadowColor="#0000FF"
+        android:shadowDx="-6"
+        android:shadowDy="4"
+        android:shadowRadius="3"
+        android:textAllCaps="false"
+        android:textColor="#BFFFF7"
+        android:textSize="16sp"/>
 </LinearLayout>

@@ -307,7 +307,7 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onBackPressed() { 
+    public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
         builder.setTitle("Quitter"); //R.string.app_name todo @string
         builder.setMessage("Voulez vous quitter l'application ?"); // todo @string

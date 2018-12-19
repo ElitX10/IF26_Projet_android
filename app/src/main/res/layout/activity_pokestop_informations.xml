@@ -31,7 +31,16 @@
             android:layout_height="match_parent"
             android:layout_weight="2.5"
             android:onClick="onClick"
-            android:text="Ajouter" />
+            android:text="Ajouter"
+
+            android:background="@drawable/button_style"
+            android:shadowColor="#0000FF"
+            android:shadowDx="-6"
+            android:shadowDy="4"
+            android:shadowRadius="3"
+            android:textAllCaps="false"
+            android:textColor="#BFFFF7"
+            android:textSize="20sp"/>
     </LinearLayout>
 
 </LinearLayout>
