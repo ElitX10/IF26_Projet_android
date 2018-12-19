@@ -84,11 +84,14 @@ public class PokestopInformationsActivity extends AppCompatActivity implements V
         actionBar.setTitle(currentPokestop.getNom());
     }
 
-    // create an action bar button
+    // create an action bar button (si le dresseur est celui qui a créé le pokestop)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.edit_button_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        if (currentPokestop.getDresseur().getId() == currentDresseur.getId()) {
+            getMenuInflater().inflate(R.menu.edit_button_menu, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
+        return false;
     }
 
     /**
