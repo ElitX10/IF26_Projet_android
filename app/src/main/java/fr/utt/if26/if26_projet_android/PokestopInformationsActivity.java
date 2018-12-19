@@ -118,7 +118,7 @@ public class PokestopInformationsActivity extends AppCompatActivity implements V
     /**
      * @param item
      * @return
-     * Ferme l'activité et revient sur l'activité parente
+     * Ferme l'activité et revient sur l'activité parente ou retourne la page de modification du pokestop
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

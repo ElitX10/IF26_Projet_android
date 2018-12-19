@@ -1,5 +1,7 @@
 package fr.utt.if26.if26_projet_android;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -91,6 +93,28 @@ public class ConnexionActivity extends AppCompatActivity implements View.OnClick
     private void openMap(){
         Intent intent = new Intent(ConnexionActivity.this, MapsActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConnexionActivity.this);
+        builder.setTitle("Quitter"); //R.string.app_name todo @string
+        builder.setMessage("Voulez vous quitter l'application ?"); // todo @string
+        builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
+            }
+        });
+        builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }

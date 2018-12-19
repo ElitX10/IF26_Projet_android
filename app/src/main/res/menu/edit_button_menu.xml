@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/icon_modif_button"
-        android:title=""
-        app:showAsAction="always"
         android:icon="@drawable/icon_modif"
-        />
+        android:title=""
+        app:showAsAction="always" />
 </menu>
