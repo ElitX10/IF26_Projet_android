@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="7dp"
+    android:layout_marginRight="7dp"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".ConnexionActivity">
@@ -50,35 +52,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onClickInscription"
-            android:text="S'inscrire"
-
             android:background="@drawable/button_style"
+            android:onClick="onClickInscription"
+
             android:shadowColor="#0000FF"
             android:shadowDx="-6"
             android:shadowDy="4"
             android:shadowRadius="3"
+            android:text="S'inscrire"
             android:textAllCaps="false"
             android:textColor="#BFFFF7"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/connecterConnexionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="Se Connecter"
-
             android:background="@drawable/button_style"
+            android:onClick="onClick"
+
             android:shadowColor="#0000FF"
             android:shadowDx="-6"
             android:shadowDy="4"
             android:shadowRadius="3"
+            android:text="Se Connecter"
             android:textAllCaps="false"
             android:textColor="#BFFFF7"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>

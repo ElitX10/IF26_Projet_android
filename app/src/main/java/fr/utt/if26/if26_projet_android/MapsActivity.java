@@ -46,7 +46,6 @@ public class MapsActivity extends AppCompatActivity implements
     private Button center_map_button;
     private android.support.v7.app.ActionBar actionBar;
 
-    private boolean isCameraLock = false;
     private LocationManager locationManager;
 
     private Location myLocation;
@@ -236,10 +235,7 @@ public class MapsActivity extends AppCompatActivity implements
      */
     @Override
     public void onLocationChanged(Location location) {
-        this.myLocation = location;
-        if(isCameraLock){
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-        }
+
     }
 
     @Override
@@ -263,24 +259,7 @@ public class MapsActivity extends AppCompatActivity implements
      */
     public void onClickLockCamera(View v){
         // todo changer le comportement :
-        isCameraLock = !isCameraLock;
-        // changement de couleur du bouton :
-        if(isCameraLock){
-            center_map_button.setBackground(getResources().getDrawable(R.drawable.button_style_red));
-        }else{
-            center_map_button.setBackground(getResources().getDrawable(R.drawable.button_style));
-        }
-
-        // focus sur la position de l'utilisateur
-        if(isCameraLock){
-            zoomOnCurrentLocation();
-            mMap.getUiSettings().setScrollGesturesEnabled(false);
-            mMap.getUiSettings().setZoomGesturesEnabled(false);
-        }else{
-            mMap.getUiSettings().setScrollGesturesEnabled(true);
-            mMap.getUiSettings().setZoomGesturesEnabled(true);
-        }
-
+        zoomOnCurrentLocation();
     }
 
     /**
