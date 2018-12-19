@@ -5,6 +5,9 @@
     android:id="@+id/linearLayoutEditPokestop"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="7dp"
+    android:layout_marginRight="7dp"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".Edit_Pokestop_Activity">
 
@@ -30,11 +33,25 @@
         android:inputType="textPersonName"
         android:text="Nom" />
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
     <Switch
         android:id="@+id/isAreneEditPokestopButtonSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:text="Arène pokemon :" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -86,8 +103,16 @@
         android:id="@+id/valideEditPokestopButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_style"
         android:onClick="onClick"
+        android:shadowColor="#0000FF"
+        android:shadowDx="-6"
+        android:shadowDy="4"
+        android:shadowRadius="3"
         android:text="Valider"
+        android:textAllCaps="false"
+        android:textColor="#BFFFF7"
+        android:textSize="20sp"
         android:visibility="visible" />
 
     <LinearLayout
@@ -100,16 +125,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/button_style"
             android:onClick="onClickSupprimerPokestop"
-            android:text="Supprimer" />
+
+            android:shadowColor="#0000FF"
+            android:shadowDx="-6"
+            android:shadowDy="4"
+            android:shadowRadius="3"
+            android:text="Supprimer"
+            android:textAllCaps="false"
+            android:textColor="#BFFFF7"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/modifierEditPokestopButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/button_style"
             android:onClick="onClickModifierPokestop"
-            android:text="Modifier" />
+
+            android:shadowColor="#0000FF"
+            android:shadowDx="-6"
+            android:shadowDy="4"
+            android:shadowRadius="3"
+            android:text="Modifier"
+            android:textAllCaps="false"
+            android:textColor="#BFFFF7"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </LinearLayout>

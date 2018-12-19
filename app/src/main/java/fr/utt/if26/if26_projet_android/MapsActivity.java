@@ -15,9 +15,13 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,7 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class MapsActivity extends FragmentActivity implements
+public class MapsActivity extends AppCompatActivity implements
         OnMapReadyCallback, View.OnClickListener, LocationListener,
         GoogleMap.OnInfoWindowClickListener {
 
@@ -40,8 +44,8 @@ public class MapsActivity extends FragmentActivity implements
     private ImageView image_pika;
     private Button show_map_button;
     private Button center_map_button;
+    private android.support.v7.app.ActionBar actionBar;
 
-    private boolean isCameraLock = false;
     private LocationManager locationManager;
 
     private Location myLocation;
@@ -74,6 +78,8 @@ public class MapsActivity extends FragmentActivity implements
         image_pika = findViewById(R.id.map_Image);
         show_map_button = findViewById(R.id.show_map_button);
         center_map_button = findViewById(R.id.lock_location_button);
+        actionBar = getSupportActionBar();
+        actionBar.setTitle(currentDresseur.getPseudo());
 
         //check permisions :
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -90,6 +96,38 @@ public class MapsActivity extends FragmentActivity implements
             image_pika.setVisibility(View.INVISIBLE);
             show_map_button.setVisibility(View.INVISIBLE);
             center_map_button.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.deco_button_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.icon_deco_button:
+                AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+                builder.setTitle("Déconnexion"); //R.string.app_name todo @string
+                builder.setMessage("Voulez vous vous déconnecter ?"); // todo @string
+                builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        deconnexion();
+                    }
+                });
+                builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -197,10 +235,7 @@ public class MapsActivity extends FragmentActivity implements
      */
     @Override
     public void onLocationChanged(Location location) {
-        this.myLocation = location;
-        if(isCameraLock){
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-        }
+
     }
 
     @Override
@@ -224,24 +259,7 @@ public class MapsActivity extends FragmentActivity implements
      */
     public void onClickLockCamera(View v){
         // todo changer le comportement :
-        isCameraLock = !isCameraLock;
-        // changement de couleur du bouton :
-        if(isCameraLock){
-            center_map_button.setBackground(getResources().getDrawable(R.drawable.button_style_red));
-        }else{
-            center_map_button.setBackground(getResources().getDrawable(R.drawable.button_style));
-        }
-
-        // focus sur la position de l'utilisateur
-        if(isCameraLock){
-            zoomOnCurrentLocation();
-            mMap.getUiSettings().setScrollGesturesEnabled(false);
-            mMap.getUiSettings().setZoomGesturesEnabled(false);
-        }else{
-            mMap.getUiSettings().setScrollGesturesEnabled(true);
-            mMap.getUiSettings().setZoomGesturesEnabled(true);
-        }
-
+        zoomOnCurrentLocation();
     }
 
     /**
@@ -270,12 +288,14 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-        builder.setTitle("Déconnexion"); //R.string.app_name todo @string
-        builder.setMessage("Voulez vous vous déconnecter ?"); // todo @string
+        builder.setTitle("Quitter"); //R.string.app_name todo @string
+        builder.setMessage("Voulez vous quitter l'application ?"); // todo @string
         builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
-                deconnexion();
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
             }
         });
         builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {

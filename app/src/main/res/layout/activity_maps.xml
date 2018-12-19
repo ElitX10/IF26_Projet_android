@@ -27,13 +27,13 @@
         android:id="@+id/show_map_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/map_Image"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
+
+        android:layout_marginTop="30dp"
+
         android:background="@drawable/button_style"
-
         android:onClick="onClick"
-
         android:shadowColor="#0000FF"
         android:shadowDx="-6"
         android:shadowDy="4"
@@ -47,8 +47,11 @@
         android:id="@+id/lock_location_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/map_Image"
 
+        android:layout_alignBottom="@+id/map_Image"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button_style"
         android:onClick="onClickLockCamera"
         android:shadowColor="#0000FF"
