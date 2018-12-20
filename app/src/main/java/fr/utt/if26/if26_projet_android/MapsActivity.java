@@ -42,8 +42,10 @@ public class MapsActivity extends AppCompatActivity implements
 
     private GoogleMap mMap;
     private ImageView image_pika;
+    private ImageView info_image;
     private Button show_map_button;
     private Button center_map_button;
+    private Button info_map_button;
     private android.support.v7.app.ActionBar actionBar;
 
     private LocationManager locationManager;
@@ -80,6 +82,8 @@ public class MapsActivity extends AppCompatActivity implements
         center_map_button = findViewById(R.id.lock_location_button);
         actionBar = getSupportActionBar();
         actionBar.setTitle(currentDresseur.getPseudo());
+        info_map_button = findViewById(R.id.info_map_button);
+        info_image = findViewById(R.id.infoImageView);
 
         //check permisions :
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -96,6 +100,7 @@ public class MapsActivity extends AppCompatActivity implements
             image_pika.setVisibility(View.INVISIBLE);
             show_map_button.setVisibility(View.INVISIBLE);
             center_map_button.setVisibility(View.VISIBLE);
+            info_map_button.setVisibility(View.VISIBLE);
         }
     }
 
@@ -258,8 +263,19 @@ public class MapsActivity extends AppCompatActivity implements
      * Permet de (dé)verouiller la camera sur l'utilisateur
      */
     public void onClickLockCamera(View v){
-        // todo changer le comportement :
         zoomOnCurrentLocation();
+    }
+
+    /**
+     * @param v boutton d'info
+     * Permet d'afficher et de cacher l'image de tuto
+     */
+    public void onClickInfo(View v){
+        if(info_image.getVisibility() == View.GONE){
+            info_image.setVisibility(View.VISIBLE);
+        }else {
+            info_image.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -337,4 +353,6 @@ public class MapsActivity extends AppCompatActivity implements
         intent.putExtra("pokestop_id", pokestopId);
         startActivity(intent);
     }
+
+
 }
